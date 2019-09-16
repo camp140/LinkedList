@@ -25,7 +25,7 @@ class Node:
 class List:
     def __init__(self, head=None):
         if head is None:
-            self.head = self.tail = None
+            self.head = None
             self.size = 0
         else:
             self.head = head
@@ -34,7 +34,6 @@ class List:
             while t.next is not None:
                 t = t.next
                 self.size += 1
-            self.tail = t
 
     def __str__(self):
         output = ''
@@ -59,7 +58,6 @@ class List:
             while t.next is not None:
                 t = t.next
             t.next = p
-            self.tail = t.next
         self.size += 1
 
     def addHead(self, data):
@@ -87,24 +85,23 @@ class List:
 
     def remove(self, data):
         t = self.head
-        if data == self.head:
-            return self.removeHead()
-        elif data == self.tail:
-            return self.removeTail()
-        while t.next is not None:
+        while t is not None:
             if data == t.data:
-                self.before(data).next = t.next
+                if self.before(data).next == data:
+                    self.before(data).next = None
+                else:
+                    self.before(data).next = t.next
                 self.size -= 1
                 return t.data
             t = t.next
         return "No Element"
 
     def removeTail(self):
-        last = self.tail
-        self.before(self.tail.data).next = None
-        self.tail = self.before(self.tail.data)
-        self.size -= 1
-        return last
+        tail = self.head
+        while tail.next is not None:
+            tail = tail.next
+        self.remove(tail.data)
+        return tail
 
     def removeHead(self):
         first = self.head
@@ -120,23 +117,22 @@ head = Node('A', n2)
 
 l = List(head)
 print(l)
-print(f'tail: {l.tail}')
 print(f'size: {l.getSize()}')
 print(f'Empty?: {l.isEmpty()}')
 l.append('E')
 print(l)
-print(f'tail: {l.tail}')
 print(f'size: {l.getSize()}')
 l.addHead('0')
 print(l)
 print(f'size: {l.getSize()}')
 print(f"is B in list?: {l.isIn('B')}")
-print(f"before C: l.before('C')")
+print(f"before C: {l.before('C')}")
 print(f"remove: {l.remove('C')}")
 print(l)
 print(f'size: {l.getSize()}')
 print(f'remove head: {l.removeHead()}')
 print(l)
+print(f'size: {l.getSize()}')
 print(f'remove tail: {l.removeTail()}')
 print(l)
 print(f'size: {l.getSize()}')

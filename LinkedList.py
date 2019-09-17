@@ -101,38 +101,95 @@ class List:
         while tail.next is not None:
             tail = tail.next
         self.remove(tail.data)
-        return tail
+        return tail.data
 
     def removeHead(self):
         first = self.head
         self.head = self.head.next
         self.size -= 1
-        return first
+        return first.data
 
+def bottomUp(List, percent):
+    index = (percent * List.size) // 100
+    for i in range(index):
+        List.append(List.removeHead())
 
-tail = Node('D')
-n3 = Node('C', tail)
-n2 = Node('B', n3)
-head = Node('A', n2)
+def deBottomUp(List, percent):
+    index = (percent * List.size) // 100
+    for i in range(index):
+        List.addHead(List.removeTail())
 
-l = List(head)
+def riffleShuffle(List, percent):
+    separate = (percent * List.size) // 100
+    insertTime = ((100-percent) * List.size) // 100
+    if percent < 50: insertTime = separate-1
+
+    t1 = List.head
+    t2 = List.head
+    for i in range(separate):
+        t2 = t2.next
+
+    if percent >= 50:
+        tail = List.head
+        for i in range(separate-1):
+            tail = tail.next
+        tail.next = None
+
+    for i in range(insertTime):
+        temp1 = t1.next
+        temp2 = t2.next
+        t1.next = t2
+        t2.next = temp1
+        t1 = temp1
+        t2 = temp2
+
+    if percent < 50: t1.next = t2
+# tail = Node('D')
+# n3 = Node('C', tail)
+# n2 = Node('B', n3)
+# head = Node('A', n2)
+#
+# l = List(head)
+# print(l)
+# print(f'size: {l.getSize()}')
+# print(f'Empty?: {l.isEmpty()}')
+# l.append('E')
+# print(l)
+# print(f'size: {l.getSize()}')
+# l.addHead('0')
+# print(l)
+# print(f'size: {l.getSize()}')
+# print(f"is B in list?: {l.isIn('B')}")
+# print(f"before C: {l.before('C')}")
+# print(f"remove: {l.remove('C')}")
+# print(l)
+# print(f'size: {l.getSize()}')
+# print(f'remove head: {l.removeHead()}')
+# print(l)
+# print(f'size: {l.getSize()}')
+# print(f'remove tail: {l.removeTail()}')
+# print(l)
+# print(f'size: {l.getSize()}')
+n10 = Node('10')
+n9 = Node('9', n10)
+n8 = Node('8', n9)
+n7 = Node('7', n8)
+n6 = Node('6', n7)
+n5 = Node('5', n6)
+n4 = Node('4', n5)
+n3 = Node('3', n4)
+n2 = Node('2', n3)
+n1 = Node('1', n2)
+
+l = List(n1)
+
 print(l)
-print(f'size: {l.getSize()}')
-print(f'Empty?: {l.isEmpty()}')
-l.append('E')
+
+# percent = int(input("% input: "))
+# bottomUp(l, percent)
+# print(f'Bottom Up: {l}')
+# deBottomUp(l, percent)
+# print(f'DeBottom Up: {l}')
+percent = int(input("% input: "))
+riffleShuffle(l, percent)
 print(l)
-print(f'size: {l.getSize()}')
-l.addHead('0')
-print(l)
-print(f'size: {l.getSize()}')
-print(f"is B in list?: {l.isIn('B')}")
-print(f"before C: {l.before('C')}")
-print(f"remove: {l.remove('C')}")
-print(l)
-print(f'size: {l.getSize()}')
-print(f'remove head: {l.removeHead()}')
-print(l)
-print(f'size: {l.getSize()}')
-print(f'remove tail: {l.removeTail()}')
-print(l)
-print(f'size: {l.getSize()}')

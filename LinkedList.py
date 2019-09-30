@@ -109,20 +109,23 @@ class List:
         self.size -= 1
         return first.data
 
+
 def bottomUp(List, percent):
     index = (percent * List.size) // 100
     for i in range(index):
         List.append(List.removeHead())
+
 
 def deBottomUp(List, percent):
     index = (percent * List.size) // 100
     for i in range(index):
         List.addHead(List.removeTail())
 
+
 def riffleShuffle(List, percent):
     separate = (percent * List.size) // 100
-    insertTime = ((100-percent) * List.size) // 100
-    if percent < 50: insertTime = separate-1
+    insertTime = ((100 - percent) * List.size) // 100
+    if percent < 50: insertTime = separate - 1
 
     t1 = List.head
     t2 = List.head
@@ -131,7 +134,7 @@ def riffleShuffle(List, percent):
 
     if percent >= 50:
         tail = List.head
-        for i in range(separate-1):
+        for i in range(separate - 1):
             tail = tail.next
         tail.next = None
 
@@ -144,6 +147,47 @@ def riffleShuffle(List, percent):
         t2 = temp2
 
     if percent < 50: t1.next = t2
+
+
+def deRiffle(List, percent):
+    separate = (percent * List.size) // 100
+
+    t1 = List.head
+    t2 = t1.next
+    temp = t2
+
+    if separate == 0 or separate == 10:
+        return List
+
+    elif separate < 5:
+        for i in range(separate - 1):
+            t1.next = t1.next.next
+            t2.next = t2.next.next
+            t1 = t1.next
+            t2 = t2.next
+        t2.next = t1.next.next
+        t2 = t2.next
+        while t2.next is not None:  #go to last
+            t2 = t2.next
+        t1.next = temp
+        t2.next = None
+    else:
+        for i in range(9 - separate):
+            t1.next = t1.next.next
+            t2.next = t2.next.next
+            t1 = t1.next
+            t2 = t2.next
+        if t1.next.next is not None:
+            t1.next = t1.next.next
+            t1 = t1.next
+            while t1.next is not None:  #go to last
+                t1 = t1.next
+            t1.next = temp
+            t2.next = None
+        else:
+            t1.next = temp
+            t2.next = None
+
 # tail = Node('D')
 # n3 = Node('C', tail)
 # n2 = Node('B', n3)
@@ -185,11 +229,14 @@ l = List(n1)
 
 print(l)
 
-# percent = int(input("% input: "))
-# bottomUp(l, percent)
-# print(f'Bottom Up: {l}')
-# deBottomUp(l, percent)
-# print(f'DeBottom Up: {l}')
+percent = int(input("% input: "))
+bottomUp(l, percent)
+print(f'Bottom Up: {l}')
+deBottomUp(l, percent)
+print(f'DeBottom Up: {l}')
 percent = int(input("% input: "))
 riffleShuffle(l, percent)
-print(l)
+print(f'riffleShuffle: {l}')
+percent = int(input("% input: "))
+deRiffle(l, percent)
+print(f'deRiffle: {l}')
